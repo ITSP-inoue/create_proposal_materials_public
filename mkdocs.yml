@@ -1,0 +1,53 @@
+# 提案資料サイト（MkDocs Material）
+site_name: 提案資料（自動生成）
+site_description: 自由記述入力から生成した提案資料
+
+theme:
+  name: material
+  language: ja
+  logo: assets/images/cat_mono.png
+  favicon: assets/images/cat_mono.png
+  features:
+    - navigation.tabs
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: ダークモードへ
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: ライトモードへ
+
+extra_css:
+  - assets/css/custom.css
+
+nav:
+  - 提案資料: index.md
+  - 背景・課題: 01_background.md
+  - 提案内容: 02_proposal.md
+  - 実施計画: 03_plan.md
+  - 効果・リスク: 04_effect_risk.md
+  - 付録: 99_appendix.md
+
+# エージェントが作るレビュー用 Markdown はサイト・PDF 成果物に含めない
+exclude_docs: |
+  REVIEW.md
+
+plugins:
+  - search:
+      lang: ja
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - tables
+
+docs_dir: docs

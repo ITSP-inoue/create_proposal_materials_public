@@ -1,0 +1,22 @@
+# MkDocs build output
+site/
+
+# PDF output
+dist/
+dist/*.pdf
+
+# PDF input
+input.txt
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment variables (API keys)
+.env
+.env.*
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/

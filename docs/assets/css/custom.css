@@ -1,0 +1,150 @@
+/* 会社・案件ごとのブランド調整（印刷PDF時も反映） */
+:root {
+  --md-primary-fg-color: #3949ab;
+}
+
+/* 表紙ロゴ: ブロック右上（WeasyPrint 向け） */
+.cover-header {
+  position: relative;
+  width: 100%;
+  min-height: 2.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.cover-header .cover-logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 84px;
+  max-width: 28%;
+  height: auto;
+  margin: 0;
+  display: block;
+}
+
+/*
+ * PDF（WeasyPrint の @media print）では Material の UI をすべて落とし、
+ * 本文テキスト（.md-content 内）だけにする。
+ */
+@media print {
+  /* --- レイアウトグリッドを潰して本文一列に --- */
+  .md-grid,
+  .md-main,
+  .md-main__inner {
+    display: block !important;
+    grid: none !important;
+    max-width: 100% !important;
+  }
+
+  /* --- ヘッダー / タブ / サイド / フッター / オーバーレイ --- */
+  .md-header,
+  .md-tabs,
+  nav.md-tabs,
+  .md-sidebar,
+  .md-sidebar--primary,
+  .md-sidebar--secondary,
+  .md-overlay,
+  .md-dialog,
+  .md-footer,
+  .md-footer-meta,
+  .md-announce,
+  .md-banner,
+  .md-consent,
+  .md-tooltipped {
+    display: none !important;
+  }
+
+  /* --- 検索・リポジトリリンク・色テーマ切替・メニュー（三本線） --- */
+  .md-search,
+  .md-search__inner,
+  .md-search__overlay,
+  .md-source,
+  .md-version,
+  .md-header__button,
+  .md-header__option,
+  .md-palette,
+  [data-md-component="search"],
+  [data-md-component="palette"] {
+    display: none !important;
+  }
+
+  label[for="__drawer"],
+  label[for="__search"],
+  label[for^="__palette"] {
+    display: none !important;
+  }
+
+  /* --- サイドバー内ナビタイトル等 --- */
+  .md-nav__title--site,
+  .md-nav__source {
+    display: none !important;
+  }
+
+  /* --- 本文エリアのみ表示 --- */
+  .md-content {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 記事内に埋め込まれた目次（矢印付きナビ）も PDF では省略 */
+  .md-content .md-nav--secondary,
+  .md-content nav[aria-label*="目次"],
+  .md-content nav[aria-label*="Table of contents"],
+  .md-content .md-nav[data-md-component="toc"],
+  .md-content__inner > nav,
+  .md-content__inner .md-nav {
+    display: none !important;
+  }
+
+  /* スキップリンク・ヘッダー内ラッパ・残りシャドウ */
+  .md-skip,
+  .md-header__inner,
+  .md-header__topic,
+  [data-md-component="header"] {
+    display: none !important;
+  }
+
+  .md-main__inner,
+  .md-content,
+  .md-header,
+  .md-sidebar,
+  .md-container {
+    box-shadow: none !important;
+  }
+
+  /* details / admonition の強い左線を印刷では弱める（完全削除は可読性が落ちるため細めに） */
+  .md-typeset .admonition,
+  .md-typeset details {
+    border-left-width: 2px !important;
+    border-left-color: #bdbdbd !important;
+    box-shadow: none !important;
+  }
+
+  .md-typeset summary {
+    list-style: none !important;
+  }
+
+  .md-typeset summary::-webkit-details-marker {
+    display: none !important;
+  }
+
+  /* 章の区切り（単一 HTML 結合用） */
+  .pdf-chapter {
+    break-before: page;
+  }
+
+  .pdf-chapter:first-of-type {
+    break-before: auto;
+  }
+
+  .cover-header {
+    min-height: 18mm;
+    margin-bottom: 6mm;
+  }
+  .cover-header .cover-logo {
+    width: 72px;
+    max-width: 35%;
+    break-inside: avoid;
+  }
+}

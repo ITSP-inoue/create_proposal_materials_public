@@ -1,0 +1,25 @@
+services:
+  proposal-build:
+    build: .
+    volumes:
+      # ローカルで編集した docs・assets をマウントして再ビルド
+      - ./docs:/app/docs
+      - ./mkdocs.yml:/app/mkdocs.yml:ro
+      # mkdocs の出力 site/ をホストに残す（未指定だとコンテナ内のみで消える）
+      - ./site:/app/site
+      - ./dist:/app/dist
+    command: >
+      sh -c "mkdocs build --strict && python scripts/html_to_pdf.py --site-dir site --single-document -o dist/proposal.pdf"
+
+  # Markdown 生成のみ（OpenAI API）。例: docker compose run --rm -e OPENAI_API_KEY=... proposal-generate input.txt
+  proposal-generate:
+    build: .
+    volumes:
+      - ./docs:/app/docs
+      # イメージ内の古いコードではなく、常にローカルの agent を使う（再ビルド不要）
+      - ./agent:/app/agent:ro
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    entrypoint: ["python", "-m", "agent"]
+    command: ["--help"]
